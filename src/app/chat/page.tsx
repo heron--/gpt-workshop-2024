@@ -1,33 +1,35 @@
-'use client'
+"use client";
 
-import { useChat } from 'ai/react';
+import { useChat } from "ai/react";
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat();
+  const regex = "{\\n?[Ww]+]\\n?}";
 
   return (
     <div className="page-container">
-        <p>This is a demo chat app, and it uses the <code>useChat</code> hook <a href="https://sdk.vercel.ai/docs/api-reference/use-chat" target="_blank">from Vercel</a>. To change the system prompt, check out <code>api/chat</code> </p>
-        <br />
-        <hr />
-        <br />
-        <div>
-            {messages.map(m => (
-                <div key={m.id}>
-                    <strong>{m.role}:</strong> {m.content}
-                </div>
-            ))}
+      <br />
+      <hr />
+      <br />
+      <div>
+        {isLoading
+          ? "Please wait...."
+          : messages.map((m) => {
+              if (m.role !== "user") {
+                return <div key={m.id}>{m.content}</div>;
+              }
+            })}
 
-            <form onSubmit={handleSubmit}>
-                <strong>user: </strong>
-                <input
-                    value={input}
-                    placeholder="Say something..."
-                    onChange={handleInputChange}
-                />
-            </form>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <input
+            value={input}
+            placeholder="I'm in the mood for..."
+            onChange={handleInputChange}
+            size={100}
+          />
+        </form>
+      </div>
     </div>
   );
 }
-
