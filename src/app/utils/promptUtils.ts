@@ -6,15 +6,18 @@ const openai = new OpenAI({
   organization: process.env.OPENAI_ORG_ID,
 });
 
-export const getProducts = async () => {
+export const getProducts = async (company: string) => {
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     stream: false,
     messages: [
       {
         role: 'system',
-        content:
-          'List me a random set of products from a company. Give me at least 10 products. Please respond with just the products',
+        content: `List me a random set of products for a company. Give me at least 10 products. Please respond with just the products`,
+      },
+      {
+        role: 'user',
+        content: `Company name: ${company}`,
       },
     ],
   });
@@ -22,8 +25,8 @@ export const getProducts = async () => {
   return response.choices[0].message.content;
 };
 
-export const getPersonas = async () => {
-  const products = await getProducts();
+export const getPersonas = async (company: string) => {
+  const products = await getProducts(company);
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     stream: false,
