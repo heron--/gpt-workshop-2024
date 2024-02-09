@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useChat } from 'ai/react';
 
@@ -6,28 +6,43 @@ export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
 
   return (
-    <div className="page-container">
-        <p>This is a demo chat app, and it uses the <code>useChat</code> hook <a href="https://sdk.vercel.ai/docs/api-reference/use-chat" target="_blank">from Vercel</a>. To change the system prompt, check out <code>api/chat</code> </p>
-        <br />
-        <hr />
-        <br />
-        <div>
-            {messages.map(m => (
-                <div key={m.id}>
-                    <strong>{m.role}:</strong> {m.content}
-                </div>
-            ))}
+    <div className='page-container'>
+      <h1>Copy writer bot for personas</h1>
+      <p>
+        Welcome to the copy writer bot for personas. Enter a company name and
+        the bot will give you a great sales pitch for a specific product based
+        on the target audience.
+      </p>
+      <br />
+      <hr />
+      <br />
+      <div>
+        {messages.map((m) => (
+          <>
+            <div
+              key={m.id}
+              style={{ whiteSpace: 'preserve', marginBottom: 12 }}
+            >
+              <strong>{m.role === 'user' ? 'Company' : 'Copy Writer'}:</strong>{' '}
+              {m.content}
+            </div>
 
-            <form onSubmit={handleSubmit}>
-                <strong>user: </strong>
-                <input
-                    value={input}
-                    placeholder="Say something..."
-                    onChange={handleInputChange}
-                />
-            </form>
-        </div>
+            {m.role === 'assistant' && <hr />}
+          </>
+        ))}
+
+        <form onSubmit={handleSubmit}>
+          <label htmlFor='Company'>
+            <strong>Company Name: </strong>
+          </label>
+          <input
+            id='Company'
+            value={input}
+            placeholder='Enter the exact name of a company'
+            onChange={handleInputChange}
+          />
+        </form>
+      </div>
     </div>
   );
 }
-
