@@ -9,28 +9,24 @@ const openai = new OpenAI({
 export const getProducts = async () => {
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
-    stream: true,
+    stream: false,
     messages: [
       {
         role: 'system',
         content:
-          'List me a random set of products from a list of companies. Give me at least 10 products. List at least 1 from each company. Response should be a comman separated list.',
-      },
-      {
-        role: 'user',
-        content: 'Companies = Omaha Steak, Shien, Fashion Nova.',
+          'List me a random set of products from a company. Give me at least 10 products. Please respond with just the products',
       },
     ],
   });
-  const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream);
+
+  return response.choices[0].message.content;
 };
 
 export const getPersonas = async () => {
   const products = await getProducts();
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
-    stream: true,
+    stream: false,
     messages: [
       {
         role: 'system',
@@ -43,6 +39,5 @@ export const getPersonas = async () => {
       },
     ],
   });
-  const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream);
+  return response.choices[0].message.content;
 };
