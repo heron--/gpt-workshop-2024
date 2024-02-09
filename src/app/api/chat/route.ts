@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   const { messages } = await req.json();
   const company = messages[messages.length - 1].content;
   try {
-    const personas = await getPersonas(company);
+    const personas1 = await getPersonas(company);
 
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
         },
         {
           role: 'user',
-          content: `Company = ${company}. Persona = ${personas}`,
+          content: `Company = ${company}. Persona = ${personas1}`,
         },
       ],
     });

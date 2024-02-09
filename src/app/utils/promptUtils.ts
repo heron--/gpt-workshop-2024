@@ -1,5 +1,4 @@
 import OpenAI from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -13,7 +12,7 @@ export const getProducts = async (company: string) => {
     messages: [
       {
         role: 'system',
-        content: `List me a random set of products for a company. Give me at least 10 products. Please respond with just the products`,
+        content: `List me a random set of products for a company from a random set of 3 categories. Give me at least 10 products per category. Please respond with just the products and the category`,
       },
       {
         role: 'user',
@@ -34,7 +33,7 @@ export const getPersonas = async (company: string) => {
       {
         role: 'system',
         content:
-          'You will describe the personality and interests of customer based on their purchase history. Response should be a comma separate list of feature.',
+          'Return a three personas based on the product listings separated by categories. Only return the name of the persona. ',
       },
       {
         role: 'user',
@@ -42,5 +41,6 @@ export const getPersonas = async (company: string) => {
       },
     ],
   });
+
   return response.choices[0].message.content;
 };
